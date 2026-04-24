@@ -5,8 +5,7 @@ import giuseppetavella.D5_gestione_eventi.enums.RuoloUtente;
 import giuseppetavella.D5_gestione_eventi.exceptions.NonAutorizzatoException;
 import giuseppetavella.D5_gestione_eventi.exceptions.NonTrovatoException;
 import giuseppetavella.D5_gestione_eventi.exceptions.RuoloUtenteNonValidoException;
-import giuseppetavella.D5_gestione_eventi.helpers.EnumHelper;
-import giuseppetavella.D5_gestione_eventi.helpers.RuoloUtenteHelper;
+import giuseppetavella.D5_gestione_eventi.helpers.UtenteHelper;
 import giuseppetavella.D5_gestione_eventi.payloads.in_request.RegistrazioneMandataDTO;
 import giuseppetavella.D5_gestione_eventi.repositories.UtentiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class UtentiService {
         String hashedPassword = this.bcrypt.encode(body.password());
     
         // il ruolo esiste se: il suo campo non è null OR il suo campo non è vuoto  
-        boolean esisteRuolo = RuoloUtenteHelper.esisteRuolo(body.ruolo());
+        boolean esisteRuolo = UtenteHelper.esisteRuolo(body.ruolo());
         
         // *************
         // RUOLO ESISTE
@@ -76,7 +75,7 @@ public class UtentiService {
         
         if(esisteRuolo) {
 
-            boolean ruoloEValido = RuoloUtenteHelper.ruoloEValido(body.ruolo());
+            boolean ruoloEValido = UtenteHelper.ruoloEValido(body.ruolo());
             
             // ruolo non è valido
             if(!ruoloEValido) {
