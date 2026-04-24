@@ -8,6 +8,10 @@ import java.util.UUID;
 public record NuovaPrenotazioneMandataDTO(
         
         @NotNull(message = "L'id dell'evento deve essere un UUID valido.")
-        UUID eventoId
+        UUID eventoId,
+        
+        // optional
+        Integer numeroPostiDesiderato
+        
 ) {
 }

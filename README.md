@@ -257,11 +257,11 @@ UNIQUE(evento_id, utente_id)
 
 # Logica query
 
-## Un evento ha almeno 1 posto disponibili?
+## Un utente puo prenotare un evento?
 
 ```
 
-INPUT: eventoId
+INPUT: evento, utente
 
 OUTPUT: si/no
 
@@ -270,14 +270,29 @@ OUTPUT: si/no
 
 ```
 
+Un utente può prenotare un evento se:
+    
+    A) l'utente non ha già prenotato quello stesso evento
+    
+    B)  AND il numero di posti desiderati è >= della differenza tra i posti totali e quelli occupati
+    
+    
+NE SEGUE:
 
+A)
+
+    NON (
+        esiste una prenotazione per
+        l'utente in input AND l'evento in input
+    )
+    
+    
+B)
+
+    il numero di posti è maggiore della differenza tra i posti totali (inizialmente fissati dall'organizzatore)
+       e da i posti occupati (cioè dalla somma dei posti nelle prenotazioni, per questo evento)
+    
+    
+   
+    
 ```
-
-
-disponibilità eventi = numero di posti rimanenti dell'evento
-
-
-per dimostrare che abbiamo usato le branch, le lasciamo, quindi non le cancelliamo
-
-
-allegare screen di postman e database

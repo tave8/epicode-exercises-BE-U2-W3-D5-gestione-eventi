@@ -41,6 +41,11 @@ public class ErrorsHandler {
         return new ErrorsToSendDTO(ex.getMessage());
     }
 
+    @ExceptionHandler(PrenotazioneNonDisponibileException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsToSendDTO handlePrenotazioneNonDisponibile(PrenotazioneNonDisponibileException ex) {
+        return new ErrorsToSendDTO(ex.getMessage());
+    }
 
     /**
      * Handles exceptions raised when current user of request

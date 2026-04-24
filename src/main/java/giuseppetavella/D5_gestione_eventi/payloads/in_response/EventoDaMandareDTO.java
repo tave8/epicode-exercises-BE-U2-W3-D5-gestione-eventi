@@ -4,8 +4,10 @@ import giuseppetavella.D5_gestione_eventi.entities.Evento;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class EventoDaMandareDTO {
+    private final UUID eventoId;
     private final String titolo;
     private final String luogo;
     private final String descrizione;
@@ -14,12 +16,17 @@ public class EventoDaMandareDTO {
     private final LocalDateTime createdAt;
     
     public EventoDaMandareDTO(Evento evento) {
+        this.eventoId = evento.getEventoId();
         this.titolo = evento.getTitolo();
         this.luogo = evento.getLuogo();
         this.descrizione = evento.getDescrizione();
         this.numeroPostiDisponibili = evento.getNumeroPostiDisponibili();
         this.dataQuandoEvento = evento.getDataQuandoEvento();
         this.createdAt = evento.getCreatedAt();
+    }
+
+    public UUID getEventoId() {
+        return eventoId;
     }
 
     public LocalDateTime getCreatedAt() {
