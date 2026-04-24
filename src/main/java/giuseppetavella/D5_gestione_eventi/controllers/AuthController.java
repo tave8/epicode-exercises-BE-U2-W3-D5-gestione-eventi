@@ -27,11 +27,11 @@ public class AuthController {
     private UtentiService utentiService;
 
 
-    // @PostMapping("/login")
-    // public DopoLoginDTO login(@RequestBody @Validated LoginMandatoDTO body) {
-    //     String accessToken = authService.checkCredentialsAndGenerateToken(body);
-    //     return new DopoLoginDTO(accessToken);
-    // }
+    @PostMapping("/login")
+    public DopoLoginDTO login(@RequestBody @Validated LoginMandatoDTO body) {
+        String accessToken = authService.checkCredentialsAndGenerateToken(body);
+        return new DopoLoginDTO(accessToken);
+    }
 
 
     @PostMapping("/register")
