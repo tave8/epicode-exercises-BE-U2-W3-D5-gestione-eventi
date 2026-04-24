@@ -3,12 +3,16 @@ package giuseppetavella.D5_gestione_eventi.services;
 import giuseppetavella.D5_gestione_eventi.entities.Evento;
 import giuseppetavella.D5_gestione_eventi.entities.Utente;
 import giuseppetavella.D5_gestione_eventi.exceptions.CreazioneEventiNonAutorizzataException;
+import giuseppetavella.D5_gestione_eventi.exceptions.NonAutorizzatoException;
 import giuseppetavella.D5_gestione_eventi.exceptions.NonTrovatoException;
 import giuseppetavella.D5_gestione_eventi.helpers.UtenteHelper;
+import giuseppetavella.D5_gestione_eventi.payloads.in_request.EventoAggiornatoMandatoDTO;
 import giuseppetavella.D5_gestione_eventi.payloads.in_request.NuovoEventoMandatoDTO;
 import giuseppetavella.D5_gestione_eventi.repositories.EventiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class EventiService {
@@ -18,6 +22,16 @@ public class EventiService {
     
     @Autowired
     private UtentiService utentiService;
+
+
+    /**
+     * Trova un evento per ID.
+     */
+    public Evento findById(UUID userId) throws NonTrovatoException {
+        return this.eventiRepository.findById(userId).orElseThrow(() -> new NonTrovatoException(userId, "evento"));
+    }
+
+
 
     /**
      * Aggiungi evento associato all'utente in input.
@@ -55,5 +69,54 @@ public class EventiService {
         return this.eventiRepository.save(evento);
         
     }
+
+
+    /**
+     * Modifica evento associato all'utente in input.
+     */
+    public Evento modificaEventoDiUtente(UUID eventoId, 
+                                         EventoAggiornatoMandatoDTO bodyEvento,
+                                         Utente presuntoCreatoreEvento) throws NonTrovatoException,
+                                                                                CreazioneEventiNonAutorizzataException
+    {
+
+        Evento eventoDaModificare;
+        
+        // se l'evento non esiste
+        try {
+
+            eventoDaModificare = this.findById(eventoId);
+
+        } catch(NonTrovatoException ex) {
+            throw new NonTrovatoException("Evento non esiste. ID era: " + eventoId);
+        }
+        
+        
+        // se il presunto creatore evento non esiste
+        try {
+            
+            this.utentiService.findById(presuntoCreatoreEvento.getUtenteId());
+
+        } catch(NonTrovatoException ex) {
+            throw new NonTrovatoException("Presunto creatore dell'evento non esiste. Presunto creatore: " + presuntoCreatoreEvento);
+        }
+        
+        boolean creatoreEventoCoincide = UtenteHelper.creatoreEventoCoincide(eventoDaModificare.getCreatoDa(), presuntoCreatoreEvento);
+        
+        // se il creatore reale dell'evento
+        // non è uguale al presunto creatore dell'evento
+        // (cioè si sta cercando di modificare un evento "non mio")
+        if(!creatoreEventoCoincide) {
+            throw new NonAutorizzatoException("Non hai il permesso di modificare l'evento con ID "+eventoId);
+        }
+        
+        // si può modificare l'evento
+        eventoDaModificare.setTitolo(bodyEvento.titolo());
+        eventoDaModificare.setDescrizione(bodyEvento.descrizione());
+
+        return this.eventiRepository.save(eventoDaModificare);
+
+    }
+    
     
 }

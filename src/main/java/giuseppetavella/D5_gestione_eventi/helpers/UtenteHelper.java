@@ -35,5 +35,12 @@ public class UtenteHelper {
         boolean eOrganizzatore = utente.getRuolo().equals(RuoloUtente.ORGANIZZATORE);
         return eOrganizzatore;
     }
+
+    /**
+     * Il creatore dell'evento coincide?
+     */
+    public static boolean creatoreEventoCoincide(Utente creatoreRealeEvento, Utente presuntoCreatoreEvento) {
+        return creatoreRealeEvento.getUtenteId().equals(presuntoCreatoreEvento.getUtenteId());
+    }
     
 }
