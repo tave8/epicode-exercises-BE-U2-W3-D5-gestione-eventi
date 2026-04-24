@@ -16,6 +16,7 @@ Request
     cognome: str
     email: str
     password: str
+    ruolo?: str
 }
 ```
 
