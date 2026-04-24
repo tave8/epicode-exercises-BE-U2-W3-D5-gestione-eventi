@@ -45,9 +45,11 @@ Evento
     - numeroPostiDisponibili: int
     - createdAt: timestamp
 
+
 Prenotazione
-    eventoId: uuid
-    utenteId: uuid
+    prenotazioneId: uuid
+    evento: Evento
+    utente: Utente
     numeroPartecipanti: int, default: 1
     createdAt: timestamp
 
