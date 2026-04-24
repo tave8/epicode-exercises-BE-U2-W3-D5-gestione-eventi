@@ -1,5 +1,52 @@
 
+- All'iscrizione, l'utente può scegliere se iscriversi come organizzatore o utente normale
+
+
 # Endpoint
+
+## /auth
+
+### POST /register
+
+Request
+
+```
+{
+    nome: str
+    cognome: str
+    email: str
+    password: str
+}
+```
+
+Response 
+
+```
+{
+    utenteId: str
+}
+```
+
+
+### POST /login
+
+
+Request
+
+```
+{
+    email: str
+    password: str
+}
+```
+
+Response
+
+```
+{
+    accessToken: str
+}
+```
 
 
 # Sicurezza
