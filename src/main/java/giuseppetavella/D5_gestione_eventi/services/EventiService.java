@@ -10,6 +10,10 @@ import giuseppetavella.D5_gestione_eventi.payloads.in_request.EventoAggiornatoMa
 import giuseppetavella.D5_gestione_eventi.payloads.in_request.NuovoEventoMandatoDTO;
 import giuseppetavella.D5_gestione_eventi.repositories.EventiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -30,8 +34,21 @@ public class EventiService {
     public Evento findById(UUID userId) throws NonTrovatoException {
         return this.eventiRepository.findById(userId).orElseThrow(() -> new NonTrovatoException(userId, "evento"));
     }
-
-
+    
+    /**
+     * Trova eventi.
+     */
+    public Page<Evento> find(int page, int size, String sortBy) {
+        // / the size of each page (how many elements in each page)
+        int finalSize = Math.min(10, size);
+        // the page number
+        int finalPage = Math.max(0, page);
+        // page is the function that will get translated to SQL,
+        // that will in turn filter the result set
+        Pageable pageable = PageRequest.of(finalPage, finalSize, Sort.by(sortBy));
+        return this.eventiRepository.findAll(pageable);
+    }
+    
 
     /**
      * Aggiungi evento associato all'utente in input.

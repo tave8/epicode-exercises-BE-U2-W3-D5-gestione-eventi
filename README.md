@@ -53,7 +53,26 @@ Response
 ## /eventi
 
 
-### POST /
+### GET / 
+
+Response 
+
+```
+content: [
+    {
+        titolo: str
+        dataQuandoEvento: str (YYYY-mm-dd)
+        luogo: str
+        numeroPostiDisponibili: int
+        descrizione: str
+        createdAt: str (timestamp)
+    }
+]
+```
+
+
+
+### POST /me
 
 Request
 
@@ -117,6 +136,19 @@ Response
 ```
 empty body
 ```
+
+
+## /prenotazioni
+
+
+### POST /me
+
+
+
+
+
+
+
 
 
 
