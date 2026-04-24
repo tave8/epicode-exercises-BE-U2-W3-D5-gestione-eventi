@@ -141,12 +141,24 @@ empty body
 ## /prenotazioni
 
 
-### POST /me
+### POST /eventi/me
 
+Request
 
+```
+{
+    eventoId: str
+}
+```
 
+Response
 
-
+```
+{
+    prenotazioneId: str
+    createdAt: str (timestamp)
+}
+```
 
 
 
