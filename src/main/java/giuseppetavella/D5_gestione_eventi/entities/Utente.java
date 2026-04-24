@@ -1,13 +1,23 @@
 package giuseppetavella.D5_gestione_eventi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import giuseppetavella.D5_gestione_eventi.enums.RuoloUtente;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "utenti")
-public class Utente {
+// this annotation allows us to never send these fields in a response
+@JsonIgnoreProperties({"password", "accountNonExpired",
+                        "accountNonLocked", "authorities",
+                        "credentialsNonExpired", "enabled"})
+public class Utente implements UserDetails {
     
     @Id
     @GeneratedValue
@@ -48,6 +58,22 @@ public class Utente {
         this(nome, cognome, email, password, RuoloUtente.UTENTE_NORMALE);
     }
     
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(
+                new SimpleGrantedAuthority(this.ruolo.name())
+        );
+    }
+    
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
     public String getCognome() {
         return cognome;
@@ -65,10 +91,7 @@ public class Utente {
         this.nome = nome;
     }
 
-    public String getPassword() {
-        return password;
-    }
-    
+
 
     public String getEmail() {
         return email;
