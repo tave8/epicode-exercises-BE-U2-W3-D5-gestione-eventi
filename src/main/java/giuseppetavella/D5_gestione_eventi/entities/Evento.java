@@ -2,6 +2,7 @@ package giuseppetavella.D5_gestione_eventi.entities;
 
 import giuseppetavella.D5_gestione_eventi.enums.RuoloUtente;
 import giuseppetavella.D5_gestione_eventi.exceptions.CreazioneEventiNonAutorizzataException;
+import giuseppetavella.D5_gestione_eventi.helpers.UtenteHelper;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -48,10 +49,9 @@ public class Evento {
                   String luogo,
                   String descrizione) throws CreazioneEventiNonAutorizzataException
     {
-        boolean eAutorizzatoACreareEventi = creatoDa.getRuolo().equals(RuoloUtente.ORGANIZZATORE);
         // verifica che chi crea l'evento sia un'utente 
         // con un ruolo autorizzato a creare l'evento
-        if(!eAutorizzatoACreareEventi) {
+        if(!UtenteHelper.eAutorizzatoACreareEventi(creatoDa)) {
             throw new CreazioneEventiNonAutorizzataException(creatoDa);
         }
         this.creatoDa = creatoDa;

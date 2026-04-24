@@ -50,6 +50,76 @@ Response
 ```
 
 
+## /eventi
+
+
+### POST /
+
+Request
+
+```
+{
+    titolo: str
+    dataQuandoEvento: str (YYYY-mm-dd)
+    luogo: str
+    numeroPostiDisponibili: int
+    descrizione: str
+}
+```
+
+Response
+
+```
+{
+    titolo: str
+    dataQuandoEvento: str (YYYY-mm-dd)
+    luogo: str
+    numeroPostiDisponibili: int
+    descrizione: str
+    createdAt: str (timestamp)
+}
+```
+
+
+### PUT /:eventoId
+
+
+```
+{
+    titolo: str
+    descrizione: str
+}
+```
+
+Response
+
+```
+{
+    titolo: str
+    dataQuandoEvento: str (YYYY-mm-dd)
+    luogo: str
+    numeroPostiDisponibili: int
+    descrizione: str
+    createdAt: str (timestamp)
+}
+```
+
+### DELETE /:eventoId
+
+Request
+
+```
+empty body
+```
+
+Response
+
+```
+empty body
+```
+
+
+
 # Sicurezza
 
 Ruoli Utente

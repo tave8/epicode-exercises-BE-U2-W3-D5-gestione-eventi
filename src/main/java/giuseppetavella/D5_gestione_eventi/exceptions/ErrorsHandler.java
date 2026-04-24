@@ -120,6 +120,7 @@ public class ErrorsHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorsToSendDTO handleMaybeMissingBody(HttpMessageNotReadableException ex) {
+        ex.printStackTrace();
         String msg = "La richiesta non è ben formata; forse manca il body, "
                 +"i campi del body non sono ben formati, o qualche valore categorico non viene soddisfatto (ENUM)?";
         return new ErrorsToSendDTO(msg);
