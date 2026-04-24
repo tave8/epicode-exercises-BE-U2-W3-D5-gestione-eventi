@@ -77,7 +77,7 @@ public class EventiService {
     public Evento modificaEventoDiUtente(UUID eventoId, 
                                          EventoAggiornatoMandatoDTO bodyEvento,
                                          Utente presuntoCreatoreEvento) throws NonTrovatoException,
-                                                                                CreazioneEventiNonAutorizzataException
+                                                                                NonAutorizzatoException
     {
 
         Evento eventoDaModificare;
@@ -115,6 +115,53 @@ public class EventiService {
         eventoDaModificare.setDescrizione(bodyEvento.descrizione());
 
         return this.eventiRepository.save(eventoDaModificare);
+
+    }
+
+
+
+    /**
+     * Rimuovi evento associato all'utente in input.
+     */
+    public void rimuoviEventoDiUtente(UUID eventoId, 
+                                      Utente presuntoCreatoreEvento) throws NonTrovatoException, 
+                                                                            NonAutorizzatoException
+    {
+
+        Evento eventoDaRimuovere;
+
+        // se l'evento non esiste
+        try {
+
+            eventoDaRimuovere = this.findById(eventoId);
+
+        } catch(NonTrovatoException ex) {
+            throw new NonTrovatoException("Evento non esiste. ID era: " + eventoId);
+        }
+
+
+        // se il presunto creatore evento non esiste
+        try {
+
+            this.utentiService.findById(presuntoCreatoreEvento.getUtenteId());
+
+        } catch(NonTrovatoException ex) {
+            throw new NonTrovatoException("Presunto creatore dell'evento non esiste. Presunto creatore: " + presuntoCreatoreEvento);
+        }
+
+        boolean creatoreEventoCoincide = UtenteHelper.creatoreEventoCoincide(eventoDaRimuovere.getCreatoDa(), presuntoCreatoreEvento);
+
+        // se il creatore reale dell'evento
+        // non è uguale al presunto creatore dell'evento
+        // (cioè si sta cercando di modificare un evento "non mio")
+        if(!creatoreEventoCoincide) {
+            throw new NonAutorizzatoException("Non hai il permesso di modificare l'evento con ID "+eventoId);
+        }
+
+        // si può rimuovere l'evento
+  
+
+        this.eventiRepository.delete(eventoDaRimuovere);
 
     }
     

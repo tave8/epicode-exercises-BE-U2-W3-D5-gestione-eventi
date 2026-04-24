@@ -47,6 +47,19 @@ public class EventiController {
         Evento eventoAppenaModificato = this.eventiService.modificaEventoDiUtente(eventoId, body, utenteAttuale);
         return new EventoDaMandareDTO(eventoAppenaModificato);
     }
+
+
+    /**
+     * Rimuovi il mio evento.
+     */
+    @DeleteMapping("/{eventoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE')")
+    public void rimuoviMioEvento(@AuthenticationPrincipal Utente utenteAttuale,
+                                 @PathVariable UUID eventoId)
+    {
+        this.eventiService.rimuoviEventoDiUtente(eventoId, utenteAttuale);
+    }
     
 
 }
